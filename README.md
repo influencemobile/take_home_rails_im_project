@@ -1,61 +1,61 @@
 # README
 
-In this project you'll be using Ruby on Rails connecting to Postgres DB.
+In this project you'll be using Ruby on Rails with Postgres to create a simple web UI to display data from a database.
 
+Users for this site are called ```Players``` who should get ```Offers``` depending on their ```OffersTargets```.
 
-Users for this site are called ```Players``
-Players should get ```Offers`` depending on their ``OffersTargets``
+## Prerequisities
+  - Ruby 2.6 installed.
+  - Postgres installed.
+    * http://postgresapp.com/
+    * http://postgresapp.com/documentation/configuration-general.html
+    
+## Setup
 
-## Your Task (after creating the tables and populating with seeds mentioned bellow):
-
- * Create a simple table called IM Offers
- * This table should have the following columns:
-   - offer Description
-   - Offer Target age
-   - Offer Target gender
- * Create a table for Players with the following columns:
-    - gender
-    - age
-    - first_name
-
- * Choosing player from the table should filter the Offers table according to the player age and gender
-
-### Notes:
-  For view, feel free to use any language you're most familiar and feel comfortable.
-
-### Project Submission:
-  - Create a branch from master [yourname]-solution
-  - Generate a PR when ready 
-
-### Bonus points:
-  Adding Test Units
-  Impressive view
-  Or anything else you would want to show off your skills on :)
-
-
-* Ruby version
-  2.6.6
-
-
-
-* Database creation
-  Install postgres
-
-* http://postgresapp.com/
-* http://postgresapp.com/documentation/configuration-general.html
-* Run `psql` in Terminal or `Open psql` from the Postgres.app status menu:
-  1. `\du`
-  2. `CREATE USER dev;`
-  3. `CREATE DATABASE "take_home_rails_im_project_development" WITH OWNER dev;`
-  5. `\q`
-
-Install gems
+* Install gems
 
   ``bundle install``
+  
+* Create the database
 
-* Database initialization
+  1. Run `psql` in Terminal or `Open psql` from the Postgres.app status menu.
+  2. `\du`
+  2. `CREATE USER dev;`
+  3. `CREATE DATABASE "take_home_rails_im_project_development" WITH OWNER dev;`
+  4. `\q`
 
-Creating tables:  ``rake db:migrate``
-Run to populate your DB:   ``rails db:seed``
+* Initialize the database
+  1. Create tables:  ``rake db:load:schema``
+  2. Populate your DB:  ``rails db:seed``
 
-* Running the server : Rails s
+* Run the Rails server : ``rails s``
+
+## Your Task:
+
+ * Create a simple table in a view called IM Offers
+ * This table should have the following columns:
+   - Offer Description
+   - Offer Target age
+   - Offer Target gender
+   
+ * Create another a second table in the view for Players with the following columns:
+    - First Name
+    - Gender
+    - Age
+
+ * Choosing a Player from the table should filter the Offers table according to the selected Player's age and gender.
+
+### Notes:
+  For the views feel free to use any development language you're most familiar and feel comfortable.
+
+
+### Bonus points:
+  - Adding Test Units
+  - Enhance the web views
+  - Anything else you would want to show off your skills on :)
+
+
+### Project Submission:
+To submit your project, do one of the following:
+  - Zip up the code and email it back.
+  - Fork the repo in Github, commit your code, then email us a link to the repo.
