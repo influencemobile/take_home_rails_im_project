@@ -32,13 +32,13 @@ Users for this site are called ```Players``` who should get ```Offers``` dependi
 
 ## Your Task:
 
- * Create a simple table in a view called IM Offers
+ * Create a simple web table in a view called IM Offers
  * This table should have the following columns:
    - Offer Description
    - Offer Target age
    - Offer Target gender
    
- * Create another a second table in the view for Players with the following columns:
+ * Create a second web table in the view for Players with the following columns:
     - First Name
     - Gender
     - Age
