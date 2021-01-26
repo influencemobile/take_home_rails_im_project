@@ -46,7 +46,7 @@ Users for this site are called ```Players``` who should get ```Offers``` dependi
  * Choosing a Player from the table should filter the Offers table according to the selected Player's age and gender.
 
 ### Notes:
-  For the views feel free to use any web development framework you're most familiar and feel comfortable.
+  For the views feel free to use any web development framework you are familiar with and feel comfortable using.
 
 
 ### Bonus points:
