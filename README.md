@@ -9,13 +9,13 @@ Users for this site are called ```Players``` who should get ```Offers``` dependi
   - Postgres installed.
     * http://postgresapp.com/
     * http://postgresapp.com/documentation/configuration-general.html
-    
+
 ## Setup
 
 * Install gems
 
   ``bundle install``
-  
+
 * Create the database
 
   1. Run `psql` in Terminal or `Open psql` from the Postgres.app status menu.
@@ -37,7 +37,7 @@ Users for this site are called ```Players``` who should get ```Offers``` dependi
    - Offer Description
    - Offer Target age
    - Offer Target gender
-   
+
  * Create a second web table in the view for Players with the following columns:
     - First Name
     - Gender
