@@ -56,6 +56,4 @@ Users for this site are called ```Players``` who should get ```Offers``` dependi
 
 
 ## Project Submission:
-To submit your project, do one of the following:
-  - Zip up the code and email it back.
-  - Fork the repo in Github, commit your code, then email us a link to the repo.
+To submit your project, fork the repo in Github, commit your code, then email us a link to the repo.
