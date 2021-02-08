@@ -25,7 +25,7 @@ Users for this site are called ```Players``` who should get ```Offers``` dependi
   4. `\q`
 
 * Initialize the database
-  1. Create tables:  ``rake db:load:schema``
+  1. Create tables:  ``rake db:schema:load``
   2. Populate your DB:  ``rails db:seed``
 
 * Run the Rails server : ``rails s``
