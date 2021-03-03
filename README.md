@@ -52,6 +52,7 @@ Users for this site are called ```Players``` who should get ```Offers``` dependi
 ### Bonus points:
   - Adding specs
   - Enhance the web views
+  - Edit / Update Offers, Players etc
   - Anything else you would want to show off your skills on :)
 
 
