@@ -61,6 +61,7 @@ GEM
       rake (>= 10.4, < 14.0)
     autoprefixer-rails (10.2.4.0)
       execjs
+    awesome_print (1.8.0)
     babel-source (5.8.35)
     babel-transpiler (0.7.0)
       babel-source (>= 4.0, < 6)
@@ -211,6 +212,7 @@ PLATFORMS
 
 DEPENDENCIES
   annotate
+  awesome_print
   bootsnap (>= 1.4.2)
   bootstrap (~> 4.6)
   byebug
