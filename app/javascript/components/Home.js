@@ -23,6 +23,7 @@ class Home extends React.Component {
     this.ageInput    = null;
     
     this.filterAgeGender = this.filterAgeGender.bind(this);
+    this.cleanAgeGenderFlter = this.cleanAgeGenderFlter.bind(this);
     
     this.onPlayerSelect   = this.onPlayerSelect.bind(this);
     this.getAge           = this.getAge.bind(this);
@@ -60,7 +61,7 @@ class Home extends React.Component {
     this.setState({
       selectedRow: selectedRow
      }, () => {
-       console.log(this.state.selectedRow);
+      console.log(this.state.selectedRow);
       this.filterAgeGender();
      });
   }
@@ -102,8 +103,27 @@ class Home extends React.Component {
 
   // Handle filter Event from Button click or select player
   filterAgeGender(){
-    this.genderFilter(this.state.selectedRow['gender']);
+    console.log("[filterAgeGender]");
     this.ageFilter(this.state.selectedRow['age'])
+    this.genderFilter(this.state.selectedRow['gender']);
+    
+  }
+
+  cleanAgeGenderFlter(){
+
+    let selectedRow = []
+    selectedRow['gender'] = "";
+    selectedRow['age'] = "";
+
+    this.setState({
+      selectedRow: selectedRow
+     }, () => {
+      console.log(this.state.selectedRow);
+      this.filterAgeGender();
+     });
+
+    // this.genderFilter(this.state.selectedRow['gender']);
+    // this.ageFilter(this.state.selectedRow['age'])
   }
 
   handlePlayerEdit(){
@@ -198,10 +218,6 @@ class Home extends React.Component {
       onSelect: this.onPlayerSelect
     };
     
-
-    // let name = this.state.playerEditable ? <input type='text' ref={input => this.name = input} defaultValue={this.props.fruit.name}/>:<h3>{this.props.fruit.name}</h3>
-    // let description = this.state.playerEditable ? <input type='text' ref={input => this.description = input} defaultValue={this.props.fruit.description}/>:<p>{this.props.fruit.description}</p>
-
     return (
       <React.Fragment>
         <nav className="navbar navbar-light bg-light">
@@ -211,8 +227,7 @@ class Home extends React.Component {
         <div className="container">
           <div className="row gx-5">
             <div className="col-12">
-              Here is the Latest React version: <strong>{React.version}</strong>
-              <button className="btn btn-lg btn-primary" onClick={ this.filterAgeGender }> filter columns by 0 </button>
+              <button className="btn btn-lg btn-primary" onClick={ this.cleanAgeGenderFlter }> Clean filter </button>
               
               <hr></hr>
               <button onClick={() => this.handlePlayerEdit()} >{this.state.playerEditable? 'Submit' : 'Edit'}</button>
@@ -237,9 +252,6 @@ class Home extends React.Component {
                 pagination={ paginationFactory() }
                 filter={ filterFactory() }
               />
-              
-              
-              
               
             </div> {/* End of col */}
           </div> {/* End of row */}
