@@ -1,47 +1,45 @@
 import React from "react"
 import PropTypes from "prop-types"
 import BootstrapTable from 'react-bootstrap-table-next';
+import cellEditFactory from 'react-bootstrap-table2-editor';
 import paginationFactory from 'react-bootstrap-table2-paginator';
 import filterFactory, { textFilter, Comparator } from 'react-bootstrap-table2-filter';
-import cellEditFactory from 'react-bootstrap-table2-editor';
+// const cellEditFactory = require('react-bootstrap-table2-editor');
 
 class Home extends React.Component {
   constructor(props) {
     super(props);
-    // this.ageRef = React.createRef();
-    // this.genderRef = React.createRef();
     this.state = {
         players:            [],
         offers:             [],
         offersTargets:      [],
         offersWithTargets:  [],
-        selectedRow:        [],
-        playerEditable:     false
+        selectedRow:        []
     };
     
-    this.genderInput = null; 
-    this.ageInput    = null;
-    
+    // Table Interaction
+    this.onPlayerSelect = this.onPlayerSelect.bind(this);
     this.filterAgeGender = this.filterAgeGender.bind(this);
     this.cleanAgeGenderFlter = this.cleanAgeGenderFlter.bind(this);
     
-    this.onPlayerSelect   = this.onPlayerSelect.bind(this);
-    this.getAge           = this.getAge.bind(this);
-    // this.handleAgeRef     = this.handleAgeRef.bind(this);
-    // this.handleGenderRef  = this.handleGenderRef.bind(this);
+    // Get Age from birth 
+    this.getAgeHelper = this.getAgeHelper.bind(this);
 
+    // Edit Player
     this.handlePlayerEdit = this.handlePlayerEdit.bind(this);
 
+    //Table related
+    this.ageFormatter = this.ageFormatter.bind(this);
+    this.genderFormatter = this.genderFormatter.bind(this);
   }
   
   componentDidMount(){
-    console.log("[Home][componentDidMount]");
-    
     // Fetch all data, Player, Offers, OffersTargets
-    this.fetchAll();
+    this.fetchAllHelper();
   }
 
-  getAge(dateString) {
+  // Helper Function for calculate age by birth
+  getAgeHelper(dateString) {
     const today = new Date();
     const birthDate = new Date(dateString);
     let age = today.getFullYear() - birthDate.getFullYear();
@@ -52,21 +50,8 @@ class Home extends React.Component {
     return age.toString();
   }
 
-
-  onPlayerSelect({ id, gender, age }, isSelected) {
-    let selectedRow = []
-    selectedRow['gender'] = gender;
-    selectedRow['age'] = this.getAge(age);
-
-    this.setState({
-      selectedRow: selectedRow
-     }, () => {
-      console.log(this.state.selectedRow);
-      this.filterAgeGender();
-     });
-  }
-
-  fetchAll(){
+  // Helper Function for fetch players, offers, offers_target data from backend, and write it to state
+  fetchAllHelper(){
     Promise.all([
       fetch('/api/v1/players'),
       fetch('/api/v1/offers'),
@@ -92,50 +77,53 @@ class Home extends React.Component {
       console.log(error);
     });
   }
-  
-  // handleGenderRef(ref){
-  //   this.genderInput = ref
-  // }
 
-  // handleAgeRef(ref){
-  //   this.ageInput = ref
-  // }
-
-  // Handle filter Event from Button click or select player
-  filterAgeGender(){
-    console.log("[filterAgeGender]");
-    this.ageFilter(this.state.selectedRow['age'])
-    this.genderFilter(this.state.selectedRow['gender']);
-    
-  }
-
-  cleanAgeGenderFlter(){
-
+  // Helper Function for change selectedRow state
+  changeSelectedRowHelper(id, gender, age){
     let selectedRow = []
-    selectedRow['gender'] = "";
-    selectedRow['age'] = "";
+    selectedRow['id'] = id;
+    selectedRow['gender'] = gender;
+    selectedRow['age'] = age == "" ? age : this.getAgeHelper(age);
 
     this.setState({
       selectedRow: selectedRow
      }, () => {
-      console.log(this.state.selectedRow);
       this.filterAgeGender();
      });
+  }
+  
+  // Player table - when select a player row
+  onPlayerSelect({ id, gender, age }, isSelected) {
+    this.changeSelectedRowHelper(id, gender, age);
+  }
 
-    // this.genderFilter(this.state.selectedRow['gender']);
-    // this.ageFilter(this.state.selectedRow['age'])
+  // Handle filter Event from Button click or select player
+  filterAgeGender(){
+    // console.log("[filterAgeGender]");
+    this.ageFilter(this.state.selectedRow['age'])
+    this.genderFilter(this.state.selectedRow['gender']);
+  }
+
+  cleanAgeGenderFlter(){
+    this.changeSelectedRowHelper("", "", "");
   }
 
   handlePlayerEdit(){
-    // assume update player id 3
-    console.log("[Home][handlePlayerEdit]");
-
-    let player = {
-      id: 3,
-      first_name: "Taco",
-      gender: "Male"
+    
+    const selectedPlayer = this.state.selectedRow;
+    if (selectedPlayer["id"] === "" || typeof selectedPlayer["id"] === 'undefined') {
+      console.log(" Select a Player first");
+      alert("Select a Player from Player first!!");
+    } else {
+      this.submitPlayerEdit();
     }
-    fetch(`/api/v1/players/3`, 
+  }
+
+  submitPlayerEdit(){
+    let player = {
+      id: this.state.selectedRow["id"]
+    }
+    fetch(`/api/v1/players/` + this.state.selectedRow["id"], 
     {
       method: 'PUT',
       body: JSON.stringify({player: player}),
@@ -143,24 +131,50 @@ class Home extends React.Component {
         'Content-Type': 'application/json'
       }
     }).then((response) => { 
-        // this.updateFruit(fruit)
-      })
+      return response.json();
+    }).then((data) => {
+      // Fetch all data
+      this.fetchAllHelper();
+      return data;
+    }).then((data) => {
+      this.changeSelectedRowHelper(data.id.toString(), data.gender, data.age);
+    });
+  }
+
+  ageFormatter(cell, row){
+    return (
+      <span>{ cell } ( { this.getAgeHelper(cell) } yr )</span>
+    );
+  }
+
+  genderFormatter(cell, row){
+    let colorLabel = "";
+    if ( cell === "Female" ) {
+      colorLabel = "label label-danger"
+    } else if ( cell === "Female" ) {
+      colorLabel = "label label-primary"
+    } else {
+      colorLabel = "label label-default"
+    }
+    return (
+      <span className={colorLabel}>{ cell }</span>
+    );
   }
 
   render () {
 
-    var nameFilter;
+    // var nameFilter;
 
-    const columns = [{
-        dataField: 'id',
-        text: 'Product ID'
-      }, {
-        dataField: 'name',
-        text: 'Product Name'
-      }, {
-        dataField: 'price',
-        text: 'Product Price'
-    }];
+    // const columns = [{
+    //     dataField: 'id',
+    //     text: 'Product ID'
+    //   }, {
+    //     dataField: 'name',
+    //     text: 'Product Name'
+    //   }, {
+    //     dataField: 'price',
+    //     text: 'Product Price'
+    // }];
 
     const playerColumns = [{
       dataField: 'id',
@@ -168,25 +182,37 @@ class Home extends React.Component {
         hidden: true
       }, {
         dataField: 'first_name',
-        text: 'Player Name'
-      }, {
-        dataField: 'age',
-        text: 'Player age'
+        text: 'First Name',
+        headerAlign: 'center',
+        sort: true
       }, {
         dataField: 'gender',
-        text: 'Player gender'
+        text: 'Gender',
+        align: 'center',
+        headerAlign: 'center',
+        sort: true
+      }, {
+        dataField: 'age',
+        text: 'Age',
+        formatter: this.ageFormatter,
+        headerAlign: 'center',
+        sort: true
     }];
 
     const offersColumns = [{
       dataField: 'id',
-        text: 'Offer ID'
+        text: 'Offer ID',
+        hidden: true
       }, {
         dataField: 'description',
-        text: 'Offer description',
+        text: 'Offer Description',
+        headerAlign: 'center',
         sort: true
       }, {
         dataField: 'age',
-        text: 'Offer age',
+        text: 'Offer Target age',
+        align: 'center',
+        headerAlign: 'center',
         sort: true,
         filter: textFilter({
           comparator: Comparator.EQ,
@@ -194,7 +220,9 @@ class Home extends React.Component {
         })
       }, {
         dataField: 'gender',
-        text: 'Offer gender',
+        text: 'Offer Target gender',
+        align: 'center',
+        headerAlign: 'center',
         sort: true,
         filter: textFilter({
           comparator: Comparator.EQ,
@@ -215,9 +243,13 @@ class Home extends React.Component {
       clickToSelect: true,
       clickToEdit: true,
       hideSelectColumn: true,
+      bgColor: (row, rowIndex) => ('#00BFFF'),
       onSelect: this.onPlayerSelect
     };
     
+    const PlayerCaptionElement = () => <h3 style={{ borderRadius: '0.25em', textAlign: 'center', color: 'purple', border: '1px solid purple', padding: '0.2em' }}>Players</h3>;
+    const OfferTargetCaptionElement = () => <h3 style={{ borderRadius: '0.25em', textAlign: 'center', color: 'purple', border: '1px solid purple', padding: '0.2em' }}>IM Offers</h3>;
+
     return (
       <React.Fragment>
         <nav className="navbar navbar-light bg-light">
@@ -227,23 +259,12 @@ class Home extends React.Component {
         <div className="container">
           <div className="row gx-5">
             <div className="col-12">
-              <button className="btn btn-lg btn-primary" onClick={ this.cleanAgeGenderFlter }> Clean filter </button>
-              
               <hr></hr>
-              <button onClick={() => this.handlePlayerEdit()} >{this.state.playerEditable? 'Submit' : 'Edit'}</button>
-              <BootstrapTable 
-                keyField='id' 
-                data={ this.state.players } 
-                columns={ playerColumns } 
-                bordered={ false }  
-                pagination={ paginationFactory() }
-                selectRow={ selectPlayersProp }
-                cellEdit={ cellEditFactory({ 
-                  mode: 'dbclick',
-                  blurToSave: true
-                }) }
-              />
-              <hr></hr>
+              {/* <button className="btn btn-lg btn-primary" style={{marginRight: "16px", marginBottom: "16px"}} onClick={ this.cleanAgeGenderFlter }> Clean filter </button>  */}
+              <button className="btn btn-lg btn-primary" style={{marginBottom: "16px"}} onClick={ () => this.handlePlayerEdit()} >Edit selected Player with random first_name, age, and gender</button>
+              {/* <div style={{paddingTop: "20px"}}></div> */}
+            </div>
+            <div className="col-6">
               <BootstrapTable 
                 keyField='id' 
                 data={ this.state.offersWithTargets } 
@@ -251,6 +272,25 @@ class Home extends React.Component {
                 bordered={ false }  
                 pagination={ paginationFactory() }
                 filter={ filterFactory() }
+                caption={<OfferTargetCaptionElement />}
+                bootstrap4
+                hover
+              />
+              
+            </div>
+            <div className="col-6">
+              <BootstrapTable 
+                keyField='id' 
+                caption={<PlayerCaptionElement />}
+                data={ this.state.players } 
+                columns={ playerColumns } 
+                bordered={ false }  
+                pagination={ paginationFactory() }
+                selectRow={ selectPlayersProp }
+                cellEdit={ cellEditFactory({ mode: 'dbclick' }) }
+                hover
+                bootstrap4
+                
               />
               
             </div> {/* End of col */}

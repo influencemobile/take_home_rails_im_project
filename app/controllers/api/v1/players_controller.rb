@@ -8,9 +8,10 @@ class Api::V1::PlayersController < ApplicationController
 
   def update
     logger.info "[Players][controller][update] #{params[:id]}"
-    logger.info params
+
     player = Player.find(params[:id])
-    player.update_attributes(player_params)
+    # player.update_attributes(player_params)
+    player.update(first_name: Faker::Name.unique.name, gender: params[:id].to_i % 2 == 0 ? 'Female' : 'Male', age: Faker::Date.birthday(min_age: 18, max_age: 65) )
     render json: player
   end
 
