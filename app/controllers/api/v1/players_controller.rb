@@ -11,8 +11,15 @@ class Api::V1::PlayersController < ApplicationController
 
     player = Player.find(params[:id])
     # player.update_attributes(player_params)
-    player.update(first_name: Faker::Name.unique.name, gender: params[:id].to_i % 2 == 0 ? 'Female' : 'Male', age: Faker::Date.birthday(min_age: 18, max_age: 65) )
-    render json: player
+    
+    # player.update!(first_name: Faker::Name.unique.name, gender: params[:id].to_i % 2 == 0 ? 'Female' : 'Male', age: Faker::Date.birthday(min_age: 18, max_age: 65) )
+    # render json: player
+    begin 
+      player.update!(first_name: Faker::Name.unique.name, gender: params[:id].to_i % 2 == 0 ? 'Female' : 'Male', age: Faker::Date.birthday(min_age: 18, max_age: 65) )
+      render json: player
+    rescue
+      render 'error/406', status: 406
+    end
   end
 
   private

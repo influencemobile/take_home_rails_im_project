@@ -11,4 +11,5 @@
 #  updated_at :datetime         not null
 #
 class Player < ActiveRecord::Base
+  
 end

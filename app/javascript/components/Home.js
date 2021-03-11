@@ -1,4 +1,4 @@
-import React from "react"
+import React, {useState} from "react"
 import PropTypes from "prop-types"
 import BootstrapTable from 'react-bootstrap-table-next';
 import cellEditFactory from 'react-bootstrap-table2-editor';
@@ -16,21 +16,6 @@ class Home extends React.Component {
         offersWithTargets:  [],
         selectedRow:        []
     };
-    
-    // Table Interaction
-    this.onPlayerSelect = this.onPlayerSelect.bind(this);
-    this.filterAgeGender = this.filterAgeGender.bind(this);
-    this.cleanAgeGenderFlter = this.cleanAgeGenderFlter.bind(this);
-    
-    // Get Age from birth 
-    this.getAgeHelper = this.getAgeHelper.bind(this);
-
-    // Edit Player
-    this.handlePlayerEdit = this.handlePlayerEdit.bind(this);
-
-    //Table related
-    this.ageFormatter = this.ageFormatter.bind(this);
-    this.genderFormatter = this.genderFormatter.bind(this);
   }
   
   componentDidMount(){
@@ -39,7 +24,7 @@ class Home extends React.Component {
   }
 
   // Helper Function for calculate age by birth
-  getAgeHelper(dateString) {
+  getAgeHelper =(dateString) => {
     const today = new Date();
     const birthDate = new Date(dateString);
     let age = today.getFullYear() - birthDate.getFullYear();
@@ -51,7 +36,7 @@ class Home extends React.Component {
   }
 
   // Helper Function for fetch players, offers, offers_target data from backend, and write it to state
-  fetchAllHelper(){
+  fetchAllHelper = () => {
     Promise.all([
       fetch('/api/v1/players'),
       fetch('/api/v1/offers'),
@@ -79,7 +64,7 @@ class Home extends React.Component {
   }
 
   // Helper Function for change selectedRow state
-  changeSelectedRowHelper(id, gender, age){
+  changeSelectedRowHelper = (id, gender, age) => {
     let selectedRow = []
     selectedRow['id'] = id;
     selectedRow['gender'] = gender;
@@ -93,22 +78,22 @@ class Home extends React.Component {
   }
   
   // Player table - when select a player row
-  onPlayerSelect({ id, gender, age }, isSelected) {
+  onPlayerSelect = ({ id, gender, age }, isSelected) => {
     this.changeSelectedRowHelper(id, gender, age);
   }
 
   // Handle filter Event from Button click or select player
-  filterAgeGender(){
+  filterAgeGender = () => {
     // console.log("[filterAgeGender]");
     this.ageFilter(this.state.selectedRow['age'])
     this.genderFilter(this.state.selectedRow['gender']);
   }
 
-  cleanAgeGenderFlter(){
+  cleanAgeGenderFlter = () => {
     this.changeSelectedRowHelper("", "", "");
   }
 
-  handlePlayerEdit(){
+  handlePlayerEdit = () => {
     
     const selectedPlayer = this.state.selectedRow;
     if (selectedPlayer["id"] === "" || typeof selectedPlayer["id"] === 'undefined') {
@@ -141,13 +126,13 @@ class Home extends React.Component {
     });
   }
 
-  ageFormatter(cell, row){
+  ageFormatter = (cell, row) => {
     return (
       <span>{ cell } ( { this.getAgeHelper(cell) } yr )</span>
     );
   }
 
-  genderFormatter(cell, row){
+  genderFormatter = (cell, row) => {
     let colorLabel = "";
     if ( cell === "Female" ) {
       colorLabel = "label label-danger"
@@ -162,19 +147,6 @@ class Home extends React.Component {
   }
 
   render () {
-
-    // var nameFilter;
-
-    // const columns = [{
-    //     dataField: 'id',
-    //     text: 'Product ID'
-    //   }, {
-    //     dataField: 'name',
-    //     text: 'Product Name'
-    //   }, {
-    //     dataField: 'price',
-    //     text: 'Product Price'
-    // }];
 
     const playerColumns = [{
       dataField: 'id',
