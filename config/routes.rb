@@ -9,9 +9,11 @@ Rails.application.routes.draw do
   # For the api
   namespace :api do
     namespace :v1 do
-      resources :players, only: [:index, :update]
-      resources :offers
-      resources :offers_targets
+      resources :players
+      resources :offers do 
+        resources :offers_targets
+      end
+      
     end
   end
 
