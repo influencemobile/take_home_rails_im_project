@@ -9,4 +9,8 @@
 #
 class OffersTarget < ActiveRecord::Base
   belongs_to :offer
+
+  # validations
+  validates_presence_of :age, :gender
+
 end

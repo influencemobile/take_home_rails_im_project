@@ -11,4 +11,7 @@
 #  updated_at :datetime         not null
 #
 class Player < ActiveRecord::Base
+  
+  # validations
+  validates_presence_of :age, :first_name, :gender, :username
 end
