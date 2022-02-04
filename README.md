@@ -22,7 +22,8 @@ Users for this site are called ```Players``` who should get ```Offers``` dependi
   2. `\du`
   2. `CREATE USER dev;`
   3. `CREATE DATABASE "take_home_rails_im_project_development" WITH OWNER dev;`
-  4. `\q`
+  4. `CREATE DATABASE "take_home_rails_im_project_test" WITH OWNER dev;`
+  5. `\q`
 
 * Initialize the database
   1. Create tables:  ``rake db:schema:load``
