@@ -1,3 +1,12 @@
+# Taco node
+
+- Ruby on Rails : Backend
+- Reactjs : Frontend
+- react-bootstrap-table-next
+- cellEditFactory is not working, so I add declare in node_modules @types/react-bootstrap-table2-editor/index.d.ts
+
+
+
 # README
 
 In this project you'll be using Ruby on Rails with Postgres to create a simple web UI to display data from a database.
