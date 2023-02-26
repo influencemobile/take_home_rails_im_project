@@ -1,0 +1,19 @@
+<div>
+  <h1>Players</h1>
+  <div>
+    <% @players.each do |player| %>
+        <table>
+        <tr>
+            <th>First name</th>
+            <th>Target Age</th>
+            <th>Target Gender</th>
+        </tr>
+        <tr>
+            <td><%= player.first_name %></td>
+            <td><%= player.age %></td>
+            <td><%= player.gender %></td>
+        </tr>
+        <table>
+    <% end %>
+  </div>
+</div>
