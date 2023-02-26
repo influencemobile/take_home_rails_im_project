@@ -1,4 +1,4 @@
-class OffersTarget < ActiveRecord::Base
+class OffersTarget < ActiveRecord
   belongs_to :offer
   validates :age, presence: true
   validates :gender, presence: true

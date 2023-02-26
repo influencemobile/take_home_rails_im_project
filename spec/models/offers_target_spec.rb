@@ -23,5 +23,5 @@ RSpec.describe OffersTarget, type: :model do
   it 'is invalid without a gender' do
     offer_target = OffersTarget.new(age: '1999-01-01', offer_id: @offer.id, gender: nil)
     expect(offer_target).to_not be_valid
-  end 
+  end
 end

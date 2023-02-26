@@ -1,5 +1,5 @@
 class OffersController < ApplicationController
- # before_action :set_offer only: %i[show update destroy]
+  # before_action :set_offer only: %i[show update destroy]
 
   def index
     @offers = Offer.includes(:offers_targets)
@@ -13,8 +13,8 @@ class OffersController < ApplicationController
     @offer.destroy
 
     respond_to do |format|
-        format.html { redirect_to offers_url, notice: 'Offer successfully destroyed.' }
-        format.json { head :no_content }
+      format.html { redirect_to offers_url, notice: 'Offer successfully destroyed.' }
+      format.json { head :no_content }
     end
   end
 
