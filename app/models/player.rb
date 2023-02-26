@@ -5,5 +5,4 @@ class Player < ActiveRecord::Base
     validates :age, presence: true
 
     has_many :offers
-    has_many :offers_targets
 end
