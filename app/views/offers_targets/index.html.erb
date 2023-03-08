@@ -1,0 +1,19 @@
+<div>
+  <h1>Offers</h1>
+  <div>
+        <table class="table p-2 bg-gray-400">
+            <tr>
+                <th>Description</th>
+                <th>Target Age</th>
+                <th>Target Gender</th>
+            </tr>
+            <% @offers_targets.each do |offer_target| %>
+                <tr>
+                  <td><%= offer_target.offer.description %></td>
+                  <td><%= offer_target.age %></td>
+                  <td><%= offer_target.gender %></td>
+                </tr>
+            <% end %>
+        </table>
+  </div>
+</div>

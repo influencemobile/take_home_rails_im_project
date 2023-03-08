@@ -1,3 +1,4 @@
-class Offer < ActiveRecord::Base
-  has_many :Offers_targets
+class Offer < ApplicationRecord
+  validates :description, presence: true
+  has_many :offers_targets
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateOffersTargets < ActiveRecord::Migration[6.0]
   def change
     create_table :offers_targets do |t|
