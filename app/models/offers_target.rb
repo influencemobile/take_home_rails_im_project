@@ -1,4 +1,4 @@
-class OffersTarget < ActiveRecord
+class OffersTarget < ApplicationRecord
   belongs_to :offer
   validates :age, presence: true
   validates :gender, presence: true

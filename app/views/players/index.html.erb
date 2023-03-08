@@ -1,19 +1,28 @@
 <div>
   <h1>Players</h1>
   <div>
-    <% @players.each do |player| %>
-        <table>
-        <tr>
-            <th>First name</th>
-            <th>Target Age</th>
-            <th>Target Gender</th>
-        </tr>
-        <tr>
-            <td><%= player.first_name %></td>
-            <td><%= player.age %></td>
-            <td><%= player.gender %></td>
-        </tr>
-        <table>
-    <% end %>
+      <table class="table">
+        <thead>
+          <tr>
+              <th scope="col">First name</th>
+              <th scope="col">Target Age</th>
+              <th scope="col">Target Gender</th>
+          </tr>
+        </thead>
+        <tbody>
+        <% @players.each do |player| %>
+            <tr>
+                <td>
+                  <%= link_to player_path(player) do %>
+                    <p> see offers</p>
+                  <%end%>
+                </td>
+                <td><%= player.first_name %></td>
+                <td><%= player.age %></td>
+                <td><%= player.gender %></td>
+            </tr>
+        <% end %>
+        </tbody>
+        </table>
   </div>
 </div>

@@ -1,4 +1,4 @@
-class Player < ActiveRecord
+class Player < ApplicationRecord
   validates :username, presence: true
   validates :first_name, presence: true
   validates :gender, presence: true
